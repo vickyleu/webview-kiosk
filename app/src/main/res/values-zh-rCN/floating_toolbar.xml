@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="floating_toolbar_menu_home">主页</string>
+    <string name="floating_toolbar_menu_unlock">解锁</string>
+    <string name="floating_toolbar_menu_lock">锁定</string>
+    <string name="floating_toolbar_menu_settings">设置</string>
+    <string name="floating_toolbar_icon_content_description">菜单</string>
+</resources>

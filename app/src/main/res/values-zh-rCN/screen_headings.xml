@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_restrictions_changed_title">配置已更新</string>
+
+    <string name="settings_title">设置</string>
+    <string name="settings_device_owner_title">设备管理员</string>
+    <string name="settings_more_actions_title">更多操作</string>
+    <string name="settings_site_permissions_title">站点权限</string>
+    <string name="settings_files_title">文件</string>
+
+    <string name="settings_web_content_title">网页内容</string>
+    <string name="settings_web_content_description">主页、黑名单、白名单、书签、文件</string>
+    <string name="settings_web_browsing_title">网页浏览</string>
+    <string name="settings_web_browsing_description">刷新、导航、历史、书签、搜索</string>
+    <string name="settings_web_engine_title">网页引擎</string>
+    <string name="settings_web_engine_description">JavaScript、存储、Cookie、缓存、缩放</string>
+    <string name="settings_web_lifecycle_title">网页生命周期</string>
+    <string name="settings_web_lifecycle_description">启动锁定、启动重置、空闲重置</string>
+    <string name="settings_appearance_title">外观</string>
+    <string name="settings_appearance_description">主题、地址栏、沉浸式、工具按钮</string>
+    <string name="settings_device_title">设备</string>
+    <string name="settings_device_description">常亮、旋转、亮度、权限、解锁</string>
+    <string name="settings_js_scripts_title">脚本</string>
+    <string name="settings_js_scripts_description">主题、桌面视口、自定义脚本</string>
+    <string name="settings_mqtt_title">MQTT</string>
+    <string name="settings_mqtt_description">远程管理和状态监控</string>
+    <string name="settings_mqtt_connection_title">连接</string>
+    <string name="settings_mqtt_connection_description">配置 MQTT 服务器连接</string>
+    <string name="settings_mqtt_topics_title">主题</string>
+    <string name="settings_mqtt_topics_description">发布和订阅主题配置</string>
+    <string name="settings_mqtt_will_title">遗嘱消息</string>
+    <string name="settings_mqtt_will_description">异常断开时发布的消息</string>
+    <string name="settings_mqtt_restrictions_title">限制</string>
+    <string name="settings_mqtt_restrictions_description">Broker 和客户端限制</string>
+    <string name="settings_mqtt_topics_publish_title">发布</string>
+    <string name="settings_mqtt_topics_subscribe_title">订阅</string>
+    <string name="settings_mqtt_topics_publish_event_title">事件</string>
+    <string name="settings_mqtt_topics_publish_event_description">发布设备和网页状态变化</string>
+    <string name="settings_mqtt_topics_publish_response_title">响应</string>
+    <string name="settings_mqtt_topics_publish_response_description">发布请求响应</string>
+    <string name="settings_mqtt_topics_subscribe_command_title">命令</string>
+    <string name="settings_mqtt_topics_subscribe_command_description">订阅控制命令</string>
+    <string name="settings_mqtt_topics_subscribe_settings_title">设置</string>
+    <string name="settings_mqtt_topics_subscribe_settings_description">订阅配置更新</string>
+    <string name="settings_mqtt_topics_subscribe_request_title">请求</string>
+    <string name="settings_mqtt_topics_subscribe_request_description">订阅信息请求</string>
+    <string name="settings_debug_log_title">调试日志</string>
+    <string name="settings_unifiedpush_title">UnifiedPush</string>
+    <string name="settings_unifiedpush_description">通过推送消息控制 Kiosk</string>
+    <string name="settings_about_title">关于</string>
+    <string name="settings_about_description">包名、版本、构建信息、安装来源</string>
+</resources>

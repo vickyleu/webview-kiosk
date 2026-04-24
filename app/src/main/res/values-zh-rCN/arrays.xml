@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_theme_option">
+        <item>跟随系统</item>
+        <item>深色模式</item>
+        <item>浅色模式</item>
+    </string-array>
+
+    <string-array name="entries_address_bar_mode_option">
+        <item>隐藏</item>
+        <item>锁定时隐藏</item>
+        <item>显示</item>
+    </string-array>
+
+    <string-array name="entries_floating_toolbar_mode_option">
+        <item>隐藏</item>
+        <item>锁定时隐藏</item>
+        <item>显示</item>
+    </string-array>
+
+    <string-array name="entries_immersive_mode_option">
+        <item>始终开启</item>
+        <item>始终关闭</item>
+        <item>仅锁定时开启</item>
+    </string-array>
+
+    <string-array name="entries_webview_inset_option">
+        <item>无</item>
+        <item>状态栏</item>
+        <item>导航栏</item>
+        <item>系统栏</item>
+        <item>屏幕缺口</item>
+        <item>安全绘制区</item>
+        <item>安全手势区</item>
+        <item>安全内容区</item>
+    </string-array>
+</resources>

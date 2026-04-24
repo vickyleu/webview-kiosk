@@ -109,7 +109,7 @@ class UserSettings(val context: Context) {
         getRestrictions,
         prefs,
         UserSettingsKeys.WebBrowsing.CLEAR_HISTORY_ON_HOME,
-        false
+        true
     )
     var replaceHistoryUrlOnRedirect by booleanPref(
         getRestrictions,
@@ -381,21 +381,21 @@ class UserSettings(val context: Context) {
         getRestrictions,
         prefs,
         UserSettingsKeys.Appearance.FLOATING_TOOLBAR_MODE,
-        FloatingToolbarModeOption.HIDDEN_WHEN_LOCKED.name,
+        FloatingToolbarModeOption.HIDDEN.name,
         fromString = FloatingToolbarModeOption::fromString
     )
     var webViewInset by stringEnumPref(
         getRestrictions,
         prefs,
         UserSettingsKeys.Appearance.WEBVIEW_INSET,
-        WebViewInsetOption.SYSTEM_BARS.name,
+        WebViewInsetOption.NONE.name,
         fromString = WebViewInsetOption::fromString
     )
     var immersiveMode by stringEnumPref(
         getRestrictions,
         prefs,
         UserSettingsKeys.Appearance.IMMERSIVE_MODE,
-        ImmersiveModeOption.ONLY_WHEN_LOCKED.name,
+        ImmersiveModeOption.ALWAYS_ON.name,
         fromString = ImmersiveModeOption::fromString
     )
     var blockedMessage by stringPref(
@@ -413,7 +413,7 @@ class UserSettings(val context: Context) {
         getRestrictions,
         prefs,
         UserSettingsKeys.Appearance.ADDRESS_BAR_MODE,
-        AddressBarModeOption.HIDDEN_WHEN_LOCKED.name,
+        AddressBarModeOption.HIDDEN.name,
         fromString = AddressBarModeOption::fromString
     )
     var addressBarSize by stringEnumPref(

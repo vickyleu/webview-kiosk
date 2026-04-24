@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="web_content_home_url_title">主页地址</string>
+    <string name="web_browsing_clear_history_on_home_title">回主页时清空历史</string>
+    <string name="web_engine_enable_javascript_title">启用 JavaScript</string>
+    <string name="web_engine_enable_dom_storage_title">启用 DOM 存储</string>
+    <string name="web_engine_accept_cookies_title">接受 Cookie</string>
+    <string name="web_engine_use_wide_viewport_title">使用宽视口</string>
+    <string name="web_engine_load_with_overview_mode_title">按页面概览加载</string>
+
+    <string name="web_lifecycle_lock_on_launch_title">启动时锁定</string>
+    <string name="web_lifecycle_reset_on_launch_title">启动时重置</string>
+    <string name="web_lifecycle_reset_on_inactivity_seconds_title">空闲重置秒数</string>
+
+    <string name="appearance_theme_title">主题</string>
+    <string name="appearance_floating_toolbar_mode_title">悬浮工具栏</string>
+    <string name="appearance_webview_inset_title">网页边距</string>
+    <string name="appearance_immersive_mode_title">沉浸模式</string>
+    <string name="appearance_address_bar_mode_title">地址栏</string>
+    <string name="appearance_address_bar_position_title">地址栏位置</string>
+    <string name="appearance_address_bar_size_title">地址栏大小</string>
+
+    <string name="device_keep_screen_on_title">保持屏幕常亮</string>
+    <string name="device_rotation_title">屏幕旋转</string>
+    <string name="device_brightness_title">亮度</string>
+    <string name="device_back_button_hold_action_title">长按返回键动作</string>
+    <string name="device_block_screen_capture_title">禁止截图</string>
+    <string name="device_block_volume_keys_title">禁用音量键</string>
+</resources>

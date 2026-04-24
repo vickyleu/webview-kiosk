@@ -12,11 +12,11 @@ android {
     namespace = "uk.nktnet.webviewkiosk"
 
     defaultConfig {
-        applicationId = "uk.nktnet.webviewkiosk"
+        applicationId = "com.vickyleu.doorplatekiosk"
         minSdk = 21
         targetSdk = 36
-        versionCode = 122
-        versionName = "0.26.8"
+        versionCode = 12201
+        versionName = "0.26.8-doorplate.1"
         buildConfigField("int", "MIN_SDK_VERSION", "$minSdk")
     }
 
