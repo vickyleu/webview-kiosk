@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -15,8 +16,8 @@ android {
         applicationId = "com.vickyleu.doorplatekiosk"
         minSdk = 21
         targetSdk = 36
-        versionCode = 12201
-        versionName = "0.26.8-doorplate.1"
+        versionCode = 12202
+        versionName = "0.26.8-doorplate.2"
         buildConfigField("int", "MIN_SDK_VERSION", "$minSdk")
     }
 
@@ -50,10 +51,23 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("keystore.jks")
+            val signingProperties = Properties().apply {
+                val propertiesFile = file("signing.properties")
+                if (propertiesFile.exists()) {
+                    propertiesFile.inputStream().use(::load)
+                }
+            }
+            storeFile = file(
+                System.getenv("KEYSTORE_FILE")
+                    ?: signingProperties.getProperty("storeFile")
+                    ?: "keystore.jks"
+            )
             storePassword = System.getenv("KEYSTORE_PASSWORD")
+                ?: signingProperties.getProperty("storePassword")
             keyAlias = System.getenv("KEY_ALIAS")
+                ?: signingProperties.getProperty("keyAlias")
             keyPassword = System.getenv("KEY_PASSWORD")
+                ?: signingProperties.getProperty("keyPassword")
         }
     }
 
