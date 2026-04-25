@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +20,7 @@ import uk.nktnet.webviewkiosk.utils.webview.WebViewNavigation
 @Composable
 fun BackPressHandler(
     customLoadUrl: (newUrl: String) -> Unit,
+    onBeforeBack: () -> Boolean = { false },
 ) {
     val context = LocalContext.current
     val userSettings = remember { UserSettings(context) }
@@ -26,9 +28,13 @@ fun BackPressHandler(
 
     val scope = rememberCoroutineScope()
     var enableBack by remember { mutableStateOf(true) }
+    val currentOnBeforeBack by rememberUpdatedState(onBeforeBack)
 
     LaunchedEffect(userSettings.allowBackwardsNavigation) {
         BackButtonStateSingleton.shortPressEvents.collect {
+            if (currentOnBeforeBack()) {
+                return@collect
+            }
             if (userSettings.allowBackwardsNavigation && enableBack) {
                 WebViewNavigation.goBack(customLoadUrl, systemSettings)
             }

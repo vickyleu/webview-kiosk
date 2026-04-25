@@ -68,6 +68,7 @@ import uk.nktnet.webviewkiosk.ui.components.setting.dialog.AppLauncherDialog
 import uk.nktnet.webviewkiosk.ui.components.webview.AddressBar
 import uk.nktnet.webviewkiosk.ui.components.webview.AddressBarSearchSuggestions
 import uk.nktnet.webviewkiosk.ui.components.webview.BookmarksDialog
+import uk.nktnet.webviewkiosk.ui.components.webview.ChineseCandidateBar
 import uk.nktnet.webviewkiosk.ui.components.webview.FloatingToolbar
 import uk.nktnet.webviewkiosk.ui.components.webview.HistoryDialog
 import uk.nktnet.webviewkiosk.ui.components.webview.ImageOptionsDialog
@@ -82,6 +83,7 @@ import uk.nktnet.webviewkiosk.utils.createCustomWebview
 import uk.nktnet.webviewkiosk.utils.enterImmersiveMode
 import uk.nktnet.webviewkiosk.utils.exitImmersiveMode
 import uk.nktnet.webviewkiosk.utils.getMimeType
+import uk.nktnet.webviewkiosk.utils.ime.ChineseImeController
 import uk.nktnet.webviewkiosk.utils.isSupportedFileURLMimeType
 import uk.nktnet.webviewkiosk.utils.shouldBeImmersed
 import uk.nktnet.webviewkiosk.utils.tryLockTask
@@ -96,6 +98,7 @@ import uk.nktnet.webviewkiosk.utils.webview.html.generateUnsupportedMimeTypePage
 import uk.nktnet.webviewkiosk.utils.webview.isCustomBlockPageUrl
 import uk.nktnet.webviewkiosk.utils.webview.loadBlockedPage
 import uk.nktnet.webviewkiosk.utils.webview.resolveUrlOrSearch
+import uk.nktnet.webviewkiosk.utils.webview.scripts.generateInsertTextIntoFocusedElementScript
 import java.io.File
 
 @Composable
@@ -174,6 +177,12 @@ fun WebviewScreen(navController: NavController) {
     var lastErrorUrl by remember { mutableStateOf("") }
 
     var suggestions by remember { mutableStateOf(listOf<String>()) }
+    val chineseImeController = remember { ChineseImeController() }
+    var chineseImeState by remember { mutableStateOf(chineseImeController.state) }
+
+    fun resetChineseIme() {
+        chineseImeState = chineseImeController.reset()
+    }
 
     if (userSettings.searchSuggestionEngine != SearchSuggestionEngineOption.NONE) {
         LaunchedEffect(addressBarHasFocus, urlBarText.text) {
@@ -214,6 +223,9 @@ fun WebviewScreen(navController: NavController) {
     }
 
     fun updateAddressBarAndHistory(url: String, originalUrl: String?) {
+        if (url.trimEnd('/') != urlBarText.text.trimEnd('/')) {
+            resetChineseIme()
+        }
         if (!addressBarHasFocus) {
             urlBarText = urlBarText.copy(text = url)
         }
@@ -275,6 +287,33 @@ fun WebviewScreen(navController: NavController) {
         return
     }
 
+    fun commitChineseText(text: String) {
+        webView.requestFocus()
+        webView.evaluateJavascript(
+            generateInsertTextIntoFocusedElementScript(text),
+            null
+        )
+    }
+
+    fun applyChineseImeResult(consumed: Boolean, commitText: String?) {
+        chineseImeState = chineseImeController.state
+        if (consumed && commitText != null) {
+            commitChineseText(commitText)
+        }
+    }
+
+    DisposableEffect(webView) {
+        webView.setOnKeyListener { _, _, event ->
+            val result = event?.let(chineseImeController::handleKeyEvent)
+                ?: return@setOnKeyListener false
+            applyChineseImeResult(result.consumed, result.commitText)
+            result.consumed
+        }
+        onDispose {
+            webView.setOnKeyListener(null)
+        }
+    }
+
     DisposableEffect(webView) {
         onDispose {
             webView.stopLoading()
@@ -284,6 +323,7 @@ fun WebviewScreen(navController: NavController) {
     }
 
     fun customLoadUrl(newUrl: String) {
+        resetChineseIme()
         systemSettings.urlBeingHandled = newUrl
         val (schemeType, blockCause) = getBlockInfo(
             url = newUrl,
@@ -477,6 +517,16 @@ fun WebviewScreen(navController: NavController) {
                         )
                     )
                 }
+
+                ChineseCandidateBar(
+                    state = chineseImeState,
+                    onCandidateSelected = { index ->
+                        val result = chineseImeController.selectCandidate(index)
+                        applyChineseImeResult(result.consumed, result.commitText)
+                    },
+                    onClose = ::resetChineseIme,
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                )
             }
 
             WebViewFindBar(
@@ -539,7 +589,17 @@ fun WebviewScreen(navController: NavController) {
         customLoadUrl = ::customLoadUrl,
     )
 
-    BackPressHandler(::customLoadUrl)
+    BackPressHandler(
+        customLoadUrl = ::customLoadUrl,
+        onBeforeBack = {
+            if (chineseImeState.enabled) {
+                resetChineseIme()
+                true
+            } else {
+                false
+            }
+        }
+    )
 
     BasicAuthDialog(authHandler, authHost, authRealm) { authHandler = null }
 
