@@ -36,6 +36,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:hardwareAccelerated="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:taskAffinity="${applicationId}.BROWSER"
@@ -68,6 +69,7 @@
             android:exported="true"
             android:theme="@style/Theme.WebviewKiosk"
             android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
             tools:targetApi="33"
             android:enableOnBackInvokedCallback="@bool/enableOnBackInvokedCallback"
         >

@@ -9,6 +9,7 @@ import android.widget.Toast
 import uk.nktnet.webviewkiosk.config.UserSettings
 import uk.nktnet.webviewkiosk.managers.CustomNotificationManager
 import uk.nktnet.webviewkiosk.managers.ToastManager
+import uk.nktnet.webviewkiosk.utils.webview.handlers.uploadModelToBambu
 import java.io.File
 import java.io.FileOutputStream
 
@@ -39,6 +40,40 @@ class BlobInterface(private val context: Context) {
                 };
             })();
         """
+
+        private const val MODEL_UPLOAD_CONFIRM_WINDOW_MS = 120_000L
+
+        @Volatile
+        private var modelUploadAllowedUntilMs = 0L
+
+        @Volatile
+        private var modelUploadFilename: String? = null
+
+        @JvmStatic
+        fun prepareModelUpload(filename: String) {
+            modelUploadFilename = sanitizeDownloadFilename(filename)
+            modelUploadAllowedUntilMs = System.currentTimeMillis() + MODEL_UPLOAD_CONFIRM_WINDOW_MS
+        }
+
+        private fun consumePreparedModelUpload(filename: String): Boolean {
+            val safeName = sanitizeDownloadFilename(filename)
+            val allowed = System.currentTimeMillis() <= modelUploadAllowedUntilMs &&
+                safeName == modelUploadFilename
+            if (allowed) {
+                modelUploadAllowedUntilMs = 0L
+                modelUploadFilename = null
+            }
+            return allowed
+        }
+
+        private fun sanitizeDownloadFilename(name: String): String {
+            val base = File(name.replace("\\", "/")).name
+                .replace("\"", "_")
+                .replace("\r", "_")
+                .replace("\n", "_")
+                .trim('.', ' ', '_', '-')
+            return base.ifBlank { "download.bin" }
+        }
     }
 
     @Suppress("unused")
@@ -70,11 +105,31 @@ class BlobInterface(private val context: Context) {
         }
     }
 
+    @Suppress("unused")
+    @JavascriptInterface
+    fun uploadModel(base64: String?, mimeType: String?, filename: String) {
+        if (!isActive || base64 == null) {
+            return
+        }
+        if (!consumePreparedModelUpload(filename)) {
+            ToastManager.show(context, "Model upload needs confirmation")
+            return
+        }
+
+        try {
+            val cleanBase64 = base64.substringAfter(',')
+            val bytes = Base64.decode(cleanBase64, Base64.DEFAULT)
+            uploadModelToBambu(context, sanitizeDownloadFilename(filename), bytes, mimeType)
+        } catch (e: Exception) {
+            ToastManager.show(context, "Send to Bambu failed: ${e.message}")
+        }
+    }
+
     private fun saveFile(name: String, bytes: ByteArray) {
         val downloads = Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_DOWNLOADS
         )
-        val file = File(downloads, name)
+        val file = File(downloads, sanitizeDownloadFilename(name))
         FileOutputStream(file).use {
             it.write(bytes)
         }

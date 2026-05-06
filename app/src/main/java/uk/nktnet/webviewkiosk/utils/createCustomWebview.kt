@@ -102,6 +102,12 @@ fun createCustomWebview(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
+            isFocusable = true
+            isFocusableInTouchMode = true
+            isClickable = true
+            isLongClickable = true
+            setLayerType(View.LAYER_TYPE_HARDWARE, null)
+            WebViewMouseEventBridge.bind(this)
 
             settings.apply {
                 javaScriptEnabled = userSettings.enableJavaScript
@@ -131,6 +137,9 @@ fun createCustomWebview(
 
                 mixedContentMode = userSettings.mixedContentMode.mode
                 overScrollMode = userSettings.overScrollMode.mode
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    offscreenPreRaster = true
+                }
             }
 
             if (userSettings.enableBatteryApi) {

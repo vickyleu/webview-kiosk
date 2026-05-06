@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MotionEvent
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -66,6 +67,7 @@ import uk.nktnet.webviewkiosk.utils.setupLockTaskPackage
 import uk.nktnet.webviewkiosk.utils.tryLockTask
 import uk.nktnet.webviewkiosk.utils.tryUnlockTask
 import uk.nktnet.webviewkiosk.utils.updateDeviceSettings
+import uk.nktnet.webviewkiosk.utils.WebViewMouseEventBridge
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
@@ -381,6 +383,20 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.dispatchKeyEvent(event)
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (WebViewMouseEventBridge.dispatchTouchEvent(event)) {
+            return true
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (WebViewMouseEventBridge.dispatchGenericMotionEvent(event)) {
+            return true
+        }
+        return super.dispatchGenericMotionEvent(event)
     }
 
     override fun onDestroy() {
